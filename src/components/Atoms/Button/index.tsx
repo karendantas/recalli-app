@@ -14,9 +14,18 @@ interface ButtonProps extends TouchableOpacityProps {
   width?: DimensionValue;
 }
 
-export function Button({ title, iconName, width = "100%" }: ButtonProps) {
+export function Button({
+  title,
+  iconName,
+  width = "100%",
+  ...rest
+}: ButtonProps) {
   return (
-    <TouchableOpacity style={[styles.container, { width }]} testID="Button">
+    <TouchableOpacity
+      style={[styles.container, { width }]}
+      {...rest}
+      testID="Button"
+    >
       {iconName && <AntDesign name={iconName} size={20} testID="icon" />}
       {title && <Text style={styles.text}>{title}</Text>}
     </TouchableOpacity>

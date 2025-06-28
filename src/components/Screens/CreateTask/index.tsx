@@ -1,18 +1,13 @@
-import { ScrollView, StyleSheet, Text } from "react-native";
-import { Header } from "@/components/Atoms/Header";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { TaskComponent } from "@/components/Atoms/TaskComponent";
+import { NewTaskForm } from "@/components/Molecules/NewTaskForm";
 import { theme } from "@/constants/theme/theme";
+import { ScrollView, StyleSheet, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export function Home() {
+export function CreateTask() {
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
-
-      <Text style={styles.headingText}>Tarefas de hoje!</Text>
-      <ScrollView style={styles.tasks}>
-        <TaskComponent title="Tomar remedi9o" date="10-02-2025" time="13:30" />
-      </ScrollView>
+      <Text style={styles.headingText}>Criar novo lembrete</Text>
+      <NewTaskForm />
     </SafeAreaView>
   );
 }
@@ -24,11 +19,6 @@ const styles = StyleSheet.create({
     paddingLeft: 18,
     paddingRight: 18,
     paddingTop: 16,
-  },
-  tasks: {
-    flex: 1,
-    paddingTop: 26,
-    gap: 16,
   },
   headingText: {
     paddingTop: 22,
