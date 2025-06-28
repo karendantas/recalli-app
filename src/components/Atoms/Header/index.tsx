@@ -1,4 +1,4 @@
-import { theme } from "@/src/constants/theme/theme";
+import { theme } from "@/constants/theme/theme";
 import { StyleSheet, Text, View } from "react-native";
 
 export function Header() {

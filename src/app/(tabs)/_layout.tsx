@@ -1,7 +1,7 @@
 import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Tabs } from "expo-router";
-import { theme } from "@/src/constants/theme/theme";
+import { theme } from "@/constants/theme/theme";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>["name"];
