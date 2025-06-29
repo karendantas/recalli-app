@@ -1,6 +1,9 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { NewTaskForm } from "..";
 
+jest.mock("@react-native-async-storage/async-storage", () =>
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+);
 describe("NewTaskForm", () => {
   it("Render forms with new task input", () => {
     const { getByText } = render(<NewTaskForm />);

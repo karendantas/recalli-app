@@ -6,8 +6,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export function CreateTask() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.headingText}>Criar novo lembrete</Text>
-      <NewTaskForm />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.headingText}>Criar novo lembrete</Text>
+        <NewTaskForm />
+      </ScrollView>
     </SafeAreaView>
   );
 }

@@ -1,8 +1,8 @@
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Header } from "@/components/Atoms/Header";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TaskComponent } from "@/components/Atoms/TaskComponent";
 import { theme } from "@/constants/theme/theme";
+import { TasksList } from "@/components/Molecules/TasksList";
 
 export function Home() {
   return (
@@ -10,9 +10,9 @@ export function Home() {
       <Header />
 
       <Text style={styles.headingText}>Tarefas de hoje!</Text>
-      <ScrollView style={styles.tasks}>
-        <TaskComponent title="Tomar remedi9o" date="10-02-2025" time="13:30" />
-      </ScrollView>
+      <View style={styles.tasks}>
+        <TasksList />
+      </View>
     </SafeAreaView>
   );
 }

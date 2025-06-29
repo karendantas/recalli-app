@@ -1,17 +1,35 @@
-import { Button } from "@/components/Atoms/Button";
-import { Input } from "@/components/Atoms/Input";
-import { theme } from "@/constants/theme/theme";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Calendar } from "../Calendar";
+
+import { DateData } from "react-native-calendars";
+import { storeTask, Task } from "@/storage/taskStorage";
+
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { taskFormSchema, taskSchema } from "./schema";
+
 import {
   calendarUtils,
   DatesSelected,
 } from "@/utils/calendarUtils/CalendarFunctions";
-import { DateData } from "react-native-calendars";
+
+import { Calendar } from "../Calendar";
+import { Button } from "@/components/Atoms/Button";
+import { Input } from "@/components/Atoms/Input";
+import { theme } from "@/constants/theme/theme";
+import { router } from "expo-router";
 
 export function NewTaskForm() {
   const [selectedDates, setSelectedDates] = useState({} as DatesSelected);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(taskSchema),
+  });
 
   function handleSelectDates(selectedDay: DateData) {
     const dates = calendarUtils.orderStartsAtAndEndsAt({
@@ -21,18 +39,39 @@ export function NewTaskForm() {
     });
     setSelectedDates(dates);
   }
-  function handleCreateTask() {
-    console.log(selectedDates.dates);
+  async function handleCreateTask(data: taskFormSchema) {
+    const newTask: Task = {
+      title: data.title,
+      date: selectedDates.formatDatesInText,
+      time: data.time,
+    };
+    await storeTask(newTask);
+
+    reset();
+    router.push("/");
   }
   return (
     <View style={styles.container}>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
           <Text style={styles.label}> O que preciso fazer? </Text>
-          <Input placeholder="Tomar remedio" iconName="form" />
+          <Controller
+            control={control}
+            name="title"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Tomar remedio"
+                iconName="form"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors && <Text>{errors.title?.message}</Text>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}> Para quando? </Text>
+
           <Calendar
             onDayPress={(date) => handleSelectDates(date)}
             markedDates={selectedDates.dates}
@@ -41,11 +80,23 @@ export function NewTaskForm() {
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}> Que horas? </Text>
-          <Input placeholder="13:30" iconName="clockcircleo" />
+          <Controller
+            control={control}
+            name="time"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="13:30"
+                iconName="clockcircleo"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors && <Text>{errors.time?.message}</Text>}
         </View>
       </View>
 
-      <Button title="Criar" onPress={handleCreateTask} />
+      <Button title="Criar" onPress={handleSubmit(handleCreateTask)} />
     </View>
   );
 }
