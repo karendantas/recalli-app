@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type Task = {
   title: string;
-  date: string;
+  startsAt: string;
+  endsAt: string;
   time: string;
 };
 

@@ -18,6 +18,8 @@ import { Button } from "@/components/Atoms/Button";
 import { Input } from "@/components/Atoms/Input";
 import { theme } from "@/constants/theme/theme";
 import { router } from "expo-router";
+import { scheduleTaskNotification } from "@/utils/notificationsUtils/notifications";
+import dayjs from "dayjs";
 
 export function NewTaskForm() {
   const [selectedDates, setSelectedDates] = useState({} as DatesSelected);
@@ -40,13 +42,26 @@ export function NewTaskForm() {
     setSelectedDates(dates);
   }
   async function handleCreateTask(data: taskFormSchema) {
+    const startsAt = dayjs(selectedDates.startsAt?.dateString);
+    const endsAt = dayjs(selectedDates.endsAt?.dateString);
     const newTask: Task = {
       title: data.title,
-      date: selectedDates.formatDatesInText,
+      startsAt: startsAt.toISOString(),
+      endsAt: endsAt.toISOString(),
       time: data.time,
     };
     await storeTask(newTask);
 
+    const fullDate = dayjs(
+      `${startsAt.format("YYYY-MM-DD")} ${data.time}`,
+      "YYYY-MM-DD HH:mm"
+    );
+
+    console.log(fullDate.toDate());
+    await scheduleTaskNotification({
+      title: data.title,
+      dateTime: fullDate.toDate(),
+    }).then(() => console.log("ola"));
     reset();
     router.push("/");
   }

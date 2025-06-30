@@ -1,15 +1,11 @@
-import { Task, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import Icons from "@expo/vector-icons/AntDesign";
 import { theme } from "@/constants/theme/theme";
 import { styles } from "./styles";
+import { Task } from "@/storage/taskStorage";
+import { calendarUtils } from "@/utils/calendarUtils/CalendarFunctions";
 
-interface TaskProps {
-  title: string;
-  date: string;
-  time: string;
-}
-
-export function TaskComponent({ title, date, time }: TaskProps) {
+export function TaskComponent({ title, startsAt, endsAt, time }: Task) {
   return (
     <View style={styles.container}>
       <Text style={styles.taskTitle}>{title}</Text>
@@ -21,7 +17,9 @@ export function TaskComponent({ title, date, time }: TaskProps) {
         </View>
         <View style={styles.taskInfo}>
           <Icons name="calendar" color={theme.colors.primaryLight} />
-          <Text style={styles.taskDateTime}>{date}</Text>
+          <Text style={styles.taskDateTime}>
+            {calendarUtils.formatDatesInTextFromISO(startsAt, endsAt)}
+          </Text>
         </View>
       </View>
     </View>

@@ -10,6 +10,7 @@ export function Home() {
       <Header />
 
       <Text style={styles.headingText}>Tarefas de hoje!</Text>
+
       <View style={styles.tasks}>
         <TasksList />
       </View>

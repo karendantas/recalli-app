@@ -90,6 +90,18 @@ function formatDatesInText({ startsAt, endsAt }: FormatDatesInText) {
   return `${startFormatted} - ${endFormatted}`;
 }
 
+function formatDatesInTextFromISO(startsAtISO: string, endsAtISO: string) {
+  const startsAt = dayjs(startsAtISO);
+  const endsAt = dayjs(endsAtISO);
+
+  const startFormatted = startsAt.format("DD/MM/YYYY");
+  const endFormatted = endsAt.format("DD/MM/YYYY");
+
+  return startFormatted === endFormatted
+    ? startFormatted
+    : `${startFormatted} - ${endFormatted}`;
+}
+
 function getIntervalDates(startsAt: DateData, endsAt: DateData): MarkedDates {
   const start = dayjs(startsAt.dateString);
   const end = dayjs(endsAt.dateString);
@@ -120,4 +132,5 @@ export const calendarUtils = {
   orderStartsAtAndEndsAt,
   formatDatesInText,
   dateToCalendarDate: CalendarUtils.getCalendarDateString,
+  formatDatesInTextFromISO,
 };
