@@ -21,6 +21,8 @@ import { Input } from "@/components/Atoms/Input";
 import { theme } from "@/constants/theme/theme";
 import { router } from "expo-router";
 
+import uuid from "react-native-uuid";
+
 export function NewTaskForm() {
   const [selectedDates, setSelectedDates] = useState({} as DatesSelected);
 
@@ -45,11 +47,13 @@ export function NewTaskForm() {
     const startsAt = dayjs(selectedDates.startsAt?.dateString);
     const endsAt = dayjs(selectedDates.endsAt?.dateString);
     const newTask: Task = {
+      id: uuid.v4(),
       title: data.title,
       startsAt: startsAt.toISOString(),
       endsAt: endsAt.toISOString(),
       time: data.time,
     };
+    console.log(newTask);
     await storeTask(newTask);
 
     const fullDate = dayjs(

@@ -10,5 +10,7 @@ export const theme = {
     textSecondary: "#C9C9C9",
     textMuted: "#9FB3DF",
     inputBackground: "#F2F2F2",
+    danger: "#e69399",
+    edit: "#b393e6",
   },
 };

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type Task = {
+  id: string;
   title: string;
   startsAt: string;
   endsAt: string;
@@ -28,3 +29,16 @@ export const getTasks = async (): Promise<Task[]> => {
     return [];
   }
 };
+
+export async function deleteTask(taskId: string) {
+  try {
+    const stored = await AsyncStorage.getItem("tasks");
+    const storedTasks = stored ? JSON.parse(stored) : [];
+
+    const updatedStoredTasks = storedTasks.filter((t: Task) => t.id !== taskId);
+    console.log(updatedStoredTasks);
+    await AsyncStorage.setItem("tasks", JSON.stringify(updatedStoredTasks));
+  } catch (error) {
+    console.log(error);
+  }
+}

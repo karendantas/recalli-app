@@ -1,11 +1,17 @@
 import { TaskComponent } from "@/components/Atoms/TaskComponent";
-import { getTasks, Task } from "@/storage/taskStorage";
+import { deleteTask, getTasks, Task } from "@/storage/taskStorage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import { FlatList } from "react-native";
 
 export function TasksList() {
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  async function handleDeleteTask(taskId: string) {
+    await deleteTask(taskId);
+    const storedTasks = await getTasks();
+    setTasks(storedTasks);
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -20,9 +26,16 @@ export function TasksList() {
   return (
     <FlatList
       data={tasks}
-      keyExtractor={(item, index) => `${item.title}-${index}`}
+      keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <TaskComponent title={item.title} date={item.date} time={item.time} />
+        <TaskComponent
+          id={item.id}
+          title={item.title}
+          startsAt={item.startsAt}
+          endsAt={item.endsAt}
+          time={item.time}
+          onDelete={() => handleDeleteTask(item.id)}
+        />
       )}
       contentContainerStyle={{ gap: 16 }}
     />

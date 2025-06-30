@@ -15,6 +15,7 @@ import "react-native-reanimated";
 import { ActivityIndicator, View } from "react-native";
 
 import { useNotificationObserver } from "@/utils/notificationsUtils/notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export { ErrorBoundary } from "expo-router";
 

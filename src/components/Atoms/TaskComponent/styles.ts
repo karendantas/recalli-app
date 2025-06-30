@@ -8,9 +8,10 @@ export const styles = StyleSheet.create({
     padding: 14,
     gap: 6,
     backgroundColor: theme.colors.cardBackground,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   taskContent: {
-    alignContent: "flex-start",
     gap: 4,
   },
   taskInfo: {

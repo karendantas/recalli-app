@@ -5,22 +5,42 @@ import { styles } from "./styles";
 import { Task } from "@/storage/taskStorage";
 import { calendarUtils } from "@/utils/calendarUtils/CalendarFunctions";
 
-export function TaskComponent({ title, startsAt, endsAt, time }: Task) {
+interface TaskComponenteProps extends Task {
+  onDelete: (taskId: string) => void;
+}
+export function TaskComponent({
+  id,
+  title,
+  startsAt,
+  endsAt,
+  time,
+  onDelete,
+}: TaskComponenteProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.taskTitle}>{title}</Text>
+      <View>
+        <Text style={styles.taskTitle}>{title}</Text>
 
-      <View style={styles.taskContent}>
-        <View style={styles.taskInfo}>
-          <Icons name="clockcircleo" color={theme.colors.primaryLight} />
-          <Text style={styles.taskDateTime}>{time}</Text>
+        <View style={styles.taskContent}>
+          <View style={styles.taskInfo}>
+            <Icons name="clockcircleo" color={theme.colors.primaryLight} />
+            <Text style={styles.taskDateTime}>{time}</Text>
+          </View>
+          <View style={styles.taskInfo}>
+            <Icons name="calendar" color={theme.colors.primaryLight} />
+            <Text style={styles.taskDateTime}>
+              {calendarUtils.formatDatesInTextFromISO(startsAt, endsAt)}
+            </Text>
+          </View>
         </View>
-        <View style={styles.taskInfo}>
-          <Icons name="calendar" color={theme.colors.primaryLight} />
-          <Text style={styles.taskDateTime}>
-            {calendarUtils.formatDatesInTextFromISO(startsAt, endsAt)}
-          </Text>
-        </View>
+      </View>
+      <View>
+        <Icons
+          name="delete"
+          size={20}
+          color={theme.colors.danger}
+          onPress={() => onDelete(id)}
+        />
       </View>
     </View>
   );
