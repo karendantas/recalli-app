@@ -1,5 +1,5 @@
 import { TaskComponent } from "@/components/Atoms/TaskComponent";
-import { deleteTask, getTasks, Task } from "@/storage/taskStorage";
+import { deleteTask, getTasks, Task } from "@/services/taskStorage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import { FlatList } from "react-native";

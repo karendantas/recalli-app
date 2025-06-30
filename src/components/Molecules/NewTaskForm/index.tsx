@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 
 import { DateData } from "react-native-calendars";
-import { storeTask, Task } from "@/storage/taskStorage";
+import { storeTask, Task } from "@/services/taskStorage";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,7 +19,7 @@ import {
   calendarUtils,
   DatesSelected,
 } from "@/utils/calendarUtils/CalendarFunctions";
-import { scheduleTaskNotification } from "@/utils/notificationsUtils/notifications";
+import { scheduleTaskNotification } from "@/services/notifications";
 
 import { Calendar } from "../Calendar";
 import { Button } from "@/components/Atoms/Button";
@@ -61,7 +67,6 @@ export function NewTaskForm() {
       "YYYY-MM-DD HH:mm"
     );
 
-    console.log(fullDate.toDate());
     await scheduleTaskNotification({
       title: data.title,
       dateTime: fullDate.toDate(),
@@ -70,53 +75,58 @@ export function NewTaskForm() {
     router.push("/");
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>O que preciso fazer? </Text>
-          <Controller
-            control={control}
-            name="title"
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="Tomar remedio"
-                iconName="form"
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-          />
-          {errors && <Text>{errors.title?.message}</Text>}
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Para quando?</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={{ flex: 1 }}
+    >
+      <View style={styles.container}>
+        <View style={styles.form}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>O que preciso fazer? </Text>
+            <Controller
+              control={control}
+              name="title"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  placeholder="Tomar remedio"
+                  iconName="form"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+            {errors && <Text>{errors.title?.message}</Text>}
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Que horas?</Text>
+            <Controller
+              control={control}
+              name="time"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  placeholder="13:30"
+                  iconName="clockcircleo"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+            {errors && <Text>{errors.time?.message}</Text>}
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Para quando?</Text>
 
-          <Calendar
-            onDayPress={(date) => handleSelectDates(date)}
-            markedDates={selectedDates.dates}
-            testID="calendar"
-          />
+            <Calendar
+              onDayPress={(date) => handleSelectDates(date)}
+              markedDates={selectedDates.dates}
+              testID="calendar"
+            />
+          </View>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Que horas?</Text>
-          <Controller
-            control={control}
-            name="time"
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="13:30"
-                iconName="clockcircleo"
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-          />
-          {errors && <Text>{errors.time?.message}</Text>}
-        </View>
+
+        <Button title="Criar" onPress={handleSubmit(handleCreateTask)} />
       </View>
-
-      <Button title="Criar" onPress={handleSubmit(handleCreateTask)} />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -127,7 +137,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   form: {
-    gap: 16,
     paddingBottom: 16,
   },
   inputContainer: {

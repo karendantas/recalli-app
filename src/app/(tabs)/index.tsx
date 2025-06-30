@@ -2,7 +2,7 @@ import { Home } from "@/components/Screens/Home";
 import {
   configureNotificationsChannel,
   requestNotificationsPermissions,
-} from "@/utils/notificationsUtils/notifications";
+} from "@/services/notifications";
 import { useEffect } from "react";
 
 export default function Screen() {

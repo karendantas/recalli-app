@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 import Icons from "@expo/vector-icons/AntDesign";
 import { theme } from "@/constants/theme/theme";
 import { styles } from "./styles";
-import { Task } from "@/storage/taskStorage";
+import { Task } from "@/services/taskStorage";
 import { calendarUtils } from "@/utils/calendarUtils/CalendarFunctions";
 
 interface TaskComponenteProps extends Task {
