@@ -7,6 +7,7 @@ import { calendarUtils } from "@/utils/calendarUtils/CalendarFunctions";
 
 interface TaskComponenteProps extends Task {
   onDelete: (taskId: string) => void;
+  completeTask: (taskId: string) => void;
 }
 export function TaskComponent({
   id,
@@ -14,12 +15,17 @@ export function TaskComponent({
   startsAt,
   endsAt,
   time,
+  isCompleted = false,
   onDelete,
+  completeTask,
 }: TaskComponenteProps) {
+  console.log(title, isCompleted);
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.taskTitle}>{title}</Text>
+        <Text style={[styles.taskTitle, isCompleted && styles.completedTitle]}>
+          {title}
+        </Text>
 
         <View style={styles.taskContent}>
           <View style={styles.taskInfo}>
@@ -34,12 +40,18 @@ export function TaskComponent({
           </View>
         </View>
       </View>
-      <View>
+      <View style={{ justifyContent: "space-between" }}>
         <Icons
           name="delete"
           size={20}
           color={theme.colors.danger}
           onPress={() => onDelete(id)}
+        />
+        <Icons
+          name={isCompleted ? "checkcircle" : "checkcircleo"}
+          size={20}
+          color={theme.colors.edit}
+          onPress={() => completeTask(id)}
         />
       </View>
     </View>

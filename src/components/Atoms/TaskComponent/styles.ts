@@ -24,6 +24,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: theme.colors.primary,
   },
+  completedTitle: {
+    textDecorationLine: "line-through",
+    color: theme.colors.primaryLight,
+  },
   taskDateTime: {
     fontFamily: "Sen_500Medium",
     fontSize: 14,

@@ -6,9 +6,10 @@ export type Task = {
   startsAt: string;
   endsAt: string;
   time: string;
+  isCompleted?: boolean;
 };
 
-export const storeTask = async (newTask: Task) => {
+export async function setTask(newTask: Task) {
   try {
     const storedTasks = await AsyncStorage.getItem("tasks");
     const tasks: Task[] = storedTasks ? JSON.parse(storedTasks) : [];
@@ -18,9 +19,9 @@ export const storeTask = async (newTask: Task) => {
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-export const getTasks = async (): Promise<Task[]> => {
+export async function getTasks() {
   try {
     const storedTasks = await AsyncStorage.getItem("tasks");
     return storedTasks ? JSON.parse(storedTasks) : [];
@@ -28,7 +29,7 @@ export const getTasks = async (): Promise<Task[]> => {
     console.log(error);
     return [];
   }
-};
+}
 
 export async function deleteTask(taskId: string) {
   try {
@@ -36,8 +37,27 @@ export async function deleteTask(taskId: string) {
     const storedTasks = stored ? JSON.parse(stored) : [];
 
     const updatedStoredTasks = storedTasks.filter((t: Task) => t.id !== taskId);
-    console.log(updatedStoredTasks);
     await AsyncStorage.setItem("tasks", JSON.stringify(updatedStoredTasks));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateTask(taskToUpdateId: string) {
+  try {
+    const stored = await AsyncStorage.getItem("tasks");
+    const storedTasks = stored ? JSON.parse(stored) : [];
+
+    const updatedTasks = storedTasks.map((task: Task) =>
+      task.id === taskToUpdateId
+        ? {
+            ...task,
+            isCompleted: !task.isCompleted,
+          }
+        : task
+    );
+
+    await AsyncStorage.setItem("tasks", JSON.stringify(updatedTasks));
   } catch (error) {
     console.log(error);
   }

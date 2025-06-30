@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { DateData } from "react-native-calendars";
-import { storeTask, Task } from "@/services/taskStorage";
+import { setTask, Task } from "@/services/taskStorage";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,7 +60,7 @@ export function NewTaskForm() {
       time: data.time,
     };
     console.log(newTask);
-    await storeTask(newTask);
+    await setTask(newTask);
 
     const fullDate = dayjs(
       `${startsAt.format("YYYY-MM-DD")} ${data.time}`,
