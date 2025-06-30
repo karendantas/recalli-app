@@ -14,6 +14,8 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { ActivityIndicator, View } from "react-native";
 
+import { useNotificationObserver } from "@/utils/notificationsUtils/notifications";
+
 export { ErrorBoundary } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
@@ -49,7 +51,9 @@ function Loading() {
     </View>
   );
 }
+
 function RootLayoutNav() {
+  useNotificationObserver();
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

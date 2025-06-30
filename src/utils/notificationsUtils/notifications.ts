@@ -1,8 +1,9 @@
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import { Platform } from "react-native";
-import Constants from "expo-constants";
 import { theme } from "@/constants/theme/theme";
+import { useEffect } from "react";
+import { Route, router } from "expo-router";
 
 // Configura as notificações recebidas em foreground
 Notifications.setNotificationHandler({
@@ -16,7 +17,7 @@ Notifications.setNotificationHandler({
 
 export async function configureNotificationsChannel() {
   if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
+    await Notifications.setNotificationChannelAsync("default", {
       name: "default",
       importance: Notifications.AndroidImportance.MAX,
       sound: "default",
@@ -57,10 +58,45 @@ export async function scheduleTaskNotification({
       title: "Tarefa pendente 📌",
       body: `Hora de: ${title}`,
       sound: "default",
+      data: {
+        url: "/(tabs)/new-task",
+      },
     },
     trigger: {
-      type: "date",
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
       date: dateTime,
+      channelId: "default",
     },
   });
+}
+
+export function useNotificationObserver() {
+  useEffect(() => {
+    let isMounted = true;
+
+    function redirect(notification: Notifications.Notification) {
+      const url = notification.request.content.data?.url as Route;
+      if (url) {
+        router.push(url);
+      }
+    }
+
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      if (!isMounted || !response?.notification) {
+        return;
+      }
+      redirect(response?.notification);
+    });
+
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        redirect(response.notification);
+      }
+    );
+
+    return () => {
+      isMounted = false;
+      subscription.remove();
+    };
+  }, []);
 }

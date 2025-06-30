@@ -7,19 +7,19 @@ import { storeTask, Task } from "@/storage/taskStorage";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskFormSchema, taskSchema } from "./schema";
+import dayjs from "dayjs";
 
 import {
   calendarUtils,
   DatesSelected,
 } from "@/utils/calendarUtils/CalendarFunctions";
+import { scheduleTaskNotification } from "@/utils/notificationsUtils/notifications";
 
 import { Calendar } from "../Calendar";
 import { Button } from "@/components/Atoms/Button";
 import { Input } from "@/components/Atoms/Input";
 import { theme } from "@/constants/theme/theme";
 import { router } from "expo-router";
-import { scheduleTaskNotification } from "@/utils/notificationsUtils/notifications";
-import dayjs from "dayjs";
 
 export function NewTaskForm() {
   const [selectedDates, setSelectedDates] = useState({} as DatesSelected);
@@ -61,7 +61,7 @@ export function NewTaskForm() {
     await scheduleTaskNotification({
       title: data.title,
       dateTime: fullDate.toDate(),
-    }).then(() => console.log("ola"));
+    });
     reset();
     router.push("/");
   }
@@ -69,7 +69,7 @@ export function NewTaskForm() {
     <View style={styles.container}>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}> O que preciso fazer? </Text>
+          <Text style={styles.label}>O que preciso fazer? </Text>
           <Controller
             control={control}
             name="title"
@@ -85,7 +85,7 @@ export function NewTaskForm() {
           {errors && <Text>{errors.title?.message}</Text>}
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}> Para quando? </Text>
+          <Text style={styles.label}>Para quando?</Text>
 
           <Calendar
             onDayPress={(date) => handleSelectDates(date)}
@@ -94,7 +94,7 @@ export function NewTaskForm() {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}> Que horas? </Text>
+          <Text style={styles.label}>Que horas?</Text>
           <Controller
             control={control}
             name="time"
