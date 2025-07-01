@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 import { theme } from "@/constants/theme/theme";
 import { useEffect } from "react";
 import { Route, router } from "expo-router";
+import { updateNotificationDelivered } from "./notificationsStorage";
 
 // Configura as notificações recebidas em foreground
 Notifications.setNotificationHandler({
@@ -59,7 +60,7 @@ export async function scheduleTaskNotification({
       body: `Hora de: ${title}`,
       sound: "default",
       data: {
-        url: "/(tabs)/new-task",
+        url: "/(tabs)/notifications",
       },
     },
     trigger: {
@@ -90,6 +91,9 @@ export function useNotificationObserver() {
 
     const subscription = Notifications.addNotificationResponseReceivedListener(
       (response) => {
+        const title = response.notification.request.content?.title as string;
+        updateNotificationDelivered(title);
+
         redirect(response.notification);
       }
     );

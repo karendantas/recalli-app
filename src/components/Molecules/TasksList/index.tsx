@@ -1,18 +1,23 @@
 import { TaskComponent } from "@/components/Atoms/TaskComponent";
-import {
-  deleteTask,
-  getTasks,
-  setTask,
-  Task,
-  updateTask,
-} from "@/services/taskStorage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { deleteTask, getTasks, Task, updateTask } from "@/services/taskStorage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
-import { FlatList } from "react-native";
+import { SectionList, Text } from "react-native";
+import { styles } from "./styles";
 
 export function TasksList() {
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  const taskSections = [
+    {
+      title: "Tarefas a fazer",
+      data: tasks.filter((t) => !t.isCompleted),
+    },
+    {
+      title: "Tarefas concluídas",
+      data: tasks.filter((t) => t.isCompleted),
+    },
+  ];
 
   async function handleDeleteTask(taskId: string) {
     await deleteTask(taskId);
@@ -23,7 +28,7 @@ export function TasksList() {
   async function completeTask(taskId: string) {
     await updateTask(taskId);
     const storedTasks = await getTasks();
-    console.log("all", storedTasks);
+
     setTasks(storedTasks);
   }
 
@@ -38,22 +43,21 @@ export function TasksList() {
   );
 
   return (
-    <FlatList
+    <SectionList
       data={tasks}
+      sections={taskSections}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <TaskComponent
-          id={item.id}
-          title={item.title}
-          startsAt={item.startsAt}
-          endsAt={item.endsAt}
-          time={item.time}
-          isCompleted={item.isCompleted}
+          {...item}
           onDelete={() => handleDeleteTask(item.id)}
           completeTask={() => completeTask(item.id)}
         />
       )}
-      contentContainerStyle={{ gap: 16 }}
+      renderSectionHeader={({ section: { title } }) => (
+        <Text style={styles.sectionTitle}>{title}</Text>
+      )}
+      contentContainerStyle={{ paddingBottom: 36 }}
     />
   );
 }

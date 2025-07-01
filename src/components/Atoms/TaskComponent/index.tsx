@@ -19,7 +19,6 @@ export function TaskComponent({
   onDelete,
   completeTask,
 }: TaskComponenteProps) {
-  console.log(title, isCompleted);
   return (
     <View style={styles.container}>
       <View>

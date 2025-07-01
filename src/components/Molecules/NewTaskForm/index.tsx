@@ -28,6 +28,7 @@ import { theme } from "@/constants/theme/theme";
 import { router } from "expo-router";
 
 import uuid from "react-native-uuid";
+import { saveNotifications } from "@/services/notificationsStorage";
 
 export function NewTaskForm() {
   const [selectedDates, setSelectedDates] = useState({} as DatesSelected);
@@ -59,7 +60,7 @@ export function NewTaskForm() {
       endsAt: endsAt.toISOString(),
       time: data.time,
     };
-    console.log(newTask);
+
     await setTask(newTask);
 
     const fullDate = dayjs(
@@ -71,6 +72,15 @@ export function NewTaskForm() {
       title: data.title,
       dateTime: fullDate.toDate(),
     });
+
+    await saveNotifications({
+      id: uuid.v4(),
+      title: data.title,
+      dateTime: fullDate.toISOString(),
+      createdAt: new Date().toISOString(),
+      delivered: false,
+    });
+
     reset();
     router.push("/");
   }

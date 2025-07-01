@@ -1,6 +1,7 @@
+import { AppNotification } from "@/@types/notification";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export async function setNotifications(newNotification: any) {
+export async function saveNotifications(newNotification: AppNotification) {
   try {
     const stored = await AsyncStorage.getItem("notifications");
     const storedNotifications = stored ? JSON.parse(stored) : [];
@@ -22,4 +23,16 @@ export async function getNotifications() {
     console.log(error);
     return [];
   }
+}
+
+export async function updateNotificationDelivered(title: string) {
+  const stored = await AsyncStorage.getItem("notifications");
+  if (!stored) return;
+
+  const notifications: AppNotification[] = JSON.parse(stored);
+  const updated = notifications.map((n) =>
+    n.title === title ? { ...n, delivered: true } : n
+  );
+
+  await AsyncStorage.setItem("notifications", JSON.stringify(updated));
 }

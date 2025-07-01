@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.cardBackground,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginBottom: 16,
   },
   taskContent: {
     gap: 4,

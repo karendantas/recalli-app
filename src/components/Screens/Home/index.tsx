@@ -9,8 +9,6 @@ export function Home() {
     <SafeAreaView style={styles.container}>
       <Header />
 
-      <Text style={styles.headingText}>Tarefas de hoje!</Text>
-
       <View style={styles.tasks}>
         <TasksList />
       </View>
@@ -30,11 +28,5 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 26,
     gap: 16,
-  },
-  headingText: {
-    paddingTop: 22,
-    fontFamily: "Sen_500Medium",
-    fontSize: 22,
-    color: theme.colors.highlight,
   },
 });
