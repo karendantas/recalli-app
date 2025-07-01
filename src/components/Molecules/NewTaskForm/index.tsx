@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { DateData } from "react-native-calendars";
-import { setTask, Task } from "@/services/taskStorage";
+import { saveTask } from "@/services/taskStorage";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,6 +29,7 @@ import { router } from "expo-router";
 
 import uuid from "react-native-uuid";
 import { saveNotifications } from "@/services/notificationsStorage";
+import { Task } from "@/@types/task";
 
 export function NewTaskForm() {
   const [selectedDates, setSelectedDates] = useState({} as DatesSelected);
@@ -53,25 +54,26 @@ export function NewTaskForm() {
   async function handleCreateTask(data: taskFormSchema) {
     const startsAt = dayjs(selectedDates.startsAt?.dateString);
     const endsAt = dayjs(selectedDates.endsAt?.dateString);
+
+    const fullDate = dayjs(
+      `${startsAt.format("YYYY-MM-DD")} ${data.time}`,
+      "YYYY-MM-DD HH:mm"
+    );
+    const notificationId = await scheduleTaskNotification({
+      title: data.title,
+      dateTime: fullDate.toDate(),
+    });
+
     const newTask: Task = {
       id: uuid.v4(),
       title: data.title,
       startsAt: startsAt.toISOString(),
       endsAt: endsAt.toISOString(),
       time: data.time,
+      notificationId,
     };
 
-    await setTask(newTask);
-
-    const fullDate = dayjs(
-      `${startsAt.format("YYYY-MM-DD")} ${data.time}`,
-      "YYYY-MM-DD HH:mm"
-    );
-
-    await scheduleTaskNotification({
-      title: data.title,
-      dateTime: fullDate.toDate(),
-    });
+    await saveTask(newTask);
 
     await saveNotifications({
       id: uuid.v4(),

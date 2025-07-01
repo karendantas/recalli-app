@@ -1,7 +1,6 @@
 import { NewTaskForm } from "@/components/Molecules/NewTaskForm";
 import { theme } from "@/constants/theme/theme";
-import { ScrollView, StyleSheet, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, StyleSheet, Text, SafeAreaView } from "react-native";
 
 export function CreateTask() {
   return (
@@ -20,7 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     paddingLeft: 18,
     paddingRight: 18,
-    paddingTop: 16,
+    paddingTop: 32,
   },
   headingText: {
     paddingTop: 22,

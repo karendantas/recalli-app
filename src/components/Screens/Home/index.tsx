@@ -1,7 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Header } from "@/components/Atoms/Header";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { theme } from "@/constants/theme/theme";
 import { TasksList } from "@/components/Molecules/TasksList";
 
 export function Home() {
@@ -22,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     paddingLeft: 18,
     paddingRight: 18,
-    paddingTop: 16,
+    paddingTop: 32,
   },
   tasks: {
     flex: 1,

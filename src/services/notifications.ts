@@ -54,7 +54,7 @@ export async function scheduleTaskNotification({
   title,
   dateTime,
 }: TaskNotifications) {
-  await Notifications.scheduleNotificationAsync({
+  return await Notifications.scheduleNotificationAsync({
     content: {
       title: "Tarefa pendente 📌",
       body: `Hora de: ${title}`,
