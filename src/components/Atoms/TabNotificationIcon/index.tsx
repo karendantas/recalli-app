@@ -3,15 +3,20 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { View } from "react-native";
 import { theme } from "@/constants/theme/theme";
 
-export function TabBarNotificationIcon(props: {
-  name: React.ComponentProps<typeof AntDesign>["name"];
+interface TabBarNotificationIconProps {
+  name: keyof typeof AntDesign.glyphMap;
   color: string;
   showBadge?: boolean;
-}) {
+}
+export function TabBarNotificationIcon({
+  name,
+  color,
+  showBadge,
+}: TabBarNotificationIconProps) {
   return (
     <View style={{ width: 24, height: 24, marginBottom: -3 }}>
-      <AntDesign name={props.name} color={props.color} size={24} />
-      {props.showBadge && (
+      <AntDesign name={name} color={color} size={24} />
+      {showBadge && (
         <View
           style={{
             position: "absolute",
@@ -22,6 +27,7 @@ export function TabBarNotificationIcon(props: {
             borderRadius: 4,
             backgroundColor: theme.colors.highlight,
           }}
+          testID="notification-active"
         />
       )}
     </View>

@@ -10,7 +10,8 @@
     "test": "jest --watchAll"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "coverage": true
   },
   "dependencies": {
     "@expo-google-fonts/sen": "^0.4.1",
