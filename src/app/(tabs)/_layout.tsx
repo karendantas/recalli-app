@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Tabs } from "expo-router";
 import { theme } from "@/constants/theme/theme";
+import { TabBarNotificationIcon } from "@/components/Atoms/TabNotificationIcon";
+import { useNotificationStore } from "@/services/notificationsStorage";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>["name"];
@@ -11,6 +13,17 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const { notifications, loadNotifications } = useNotificationStore();
+  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+  async function verifyExistingNotifications() {
+    await loadNotifications();
+    if (notifications.length > 0) {
+      setHasUnreadNotifications(true);
+    }
+  }
+  useEffect(() => {
+    verifyExistingNotifications();
+  }, []);
   return (
     <Tabs
       screenOptions={{
@@ -38,7 +51,13 @@ export default function TabLayout() {
         name="notifications"
         options={{
           title: "Notificações",
-          tabBarIcon: ({ color }) => <TabBarIcon name="bells" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarNotificationIcon
+              name="bells"
+              color={color}
+              showBadge={hasUnreadNotifications}
+            />
+          ),
         }}
       />
     </Tabs>

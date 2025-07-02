@@ -1,22 +1,13 @@
 import { AppNotification } from "@/@types/notification";
-import { theme } from "@/constants/theme/theme";
-import { getNotifications } from "@/services/notificationsStorage";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 
-export default function NotificationsList() {
-  const [notifications, setNotifications] = useState<AppNotification[]>([]);
-
-  async function loadNotifications() {
-    const stored = await getNotifications();
-    setNotifications(stored);
-  }
-
-  useEffect(() => {
-    loadNotifications();
-  }, []);
-
+interface NotificationsListProps {
+  notifications: AppNotification[];
+}
+export default function NotificationsList({
+  notifications,
+}: NotificationsListProps) {
   return (
     <FlatList
       data={notifications}

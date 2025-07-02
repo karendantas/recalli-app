@@ -1,38 +1,56 @@
-import { AppNotification } from "@/@types/notification";
+import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppNotification } from "@/@types/notification";
 
-export async function saveNotifications(newNotification: AppNotification) {
-  try {
-    const stored = await AsyncStorage.getItem("notifications");
-    const storedNotifications = stored ? JSON.parse(stored) : [];
-
-    const updatedNotifications = [...storedNotifications, newNotification];
-    await AsyncStorage.setItem(
-      "notifications",
-      JSON.stringify(updatedNotifications)
-    );
-  } catch (error) {
-    console.log(error);
-  }
-}
-export async function getNotifications() {
-  try {
-    const stored = await AsyncStorage.getItem("notifications");
-    return stored ? JSON.parse(stored) : [];
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
+interface NotificationStore {
+  notifications: AppNotification[];
+  loadNotifications: () => Promise<void>;
+  addNotification: (newNotification: AppNotification) => Promise<void>;
+  updateDelivered: (title: string) => Promise<void>;
+  clearNotifications: () => Promise<void>;
 }
 
-export async function updateNotificationDelivered(title: string) {
-  const stored = await AsyncStorage.getItem("notifications");
-  if (!stored) return;
+export const useNotificationStore = create<NotificationStore>((set, get) => ({
+  notifications: [],
 
-  const notifications: AppNotification[] = JSON.parse(stored);
-  const updated = notifications.map((n) =>
-    n.title === title ? { ...n, delivered: true } : n
-  );
+  loadNotifications: async () => {
+    try {
+      const stored = await AsyncStorage.getItem("notifications");
+      const parsed = stored ? JSON.parse(stored) : [];
+      set({ notifications: parsed });
+    } catch (error) {
+      console.log("Erro ao carregar notificações:", error);
+    }
+  },
 
-  await AsyncStorage.setItem("notifications", JSON.stringify(updated));
-}
+  addNotification: async (newNotification: AppNotification) => {
+    try {
+      const updated = [...get().notifications, newNotification];
+      await AsyncStorage.setItem("notifications", JSON.stringify(updated));
+      set({ notifications: updated });
+    } catch (error) {
+      console.log("Erro ao salvar notificação:", error);
+    }
+  },
+
+  updateDelivered: async (title: string) => {
+    try {
+      const updated = get().notifications.map((n) =>
+        n.title === title ? { ...n, delivered: true } : n
+      );
+      await AsyncStorage.setItem("notifications", JSON.stringify(updated));
+      set({ notifications: updated });
+    } catch (error) {
+      console.log("Erro ao atualizar notificação:", error);
+    }
+  },
+
+  clearNotifications: async () => {
+    try {
+      await AsyncStorage.removeItem("notifications");
+      set({ notifications: [] });
+    } catch (error) {
+      console.log("Erro ao limpar notificações:", error);
+    }
+  },
+}));

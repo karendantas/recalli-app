@@ -28,12 +28,13 @@ import { theme } from "@/constants/theme/theme";
 import { router } from "expo-router";
 
 import uuid from "react-native-uuid";
-import { saveNotifications } from "@/services/notificationsStorage";
+import { useNotificationStore } from "@/services/notificationsStorage";
 import { Task } from "@/@types/task";
 
 export function NewTaskForm() {
+  const { notifications, addNotification, updateDelivered } =
+    useNotificationStore();
   const [selectedDates, setSelectedDates] = useState({} as DatesSelected);
-
   const {
     control,
     handleSubmit,
@@ -75,7 +76,7 @@ export function NewTaskForm() {
 
     await saveTask(newTask);
 
-    await saveNotifications({
+    addNotification({
       id: uuid.v4(),
       title: data.title,
       dateTime: fullDate.toISOString(),
