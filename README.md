@@ -33,26 +33,31 @@ Este projeto foi desenvolvido como solução para o **segundo desafio mobile do 
 <p align="center">
   <img src="assets/prints/1.jpg" alt="Tela Inicial" width="250"/>
 </p>
+
 ### Tela home com tasks
 
 <p align="center">
   <img src="assets/prints/2.jpg" alt="Tela Inicial" width="250"/>
 </p>
+
 ### Tela de criar tasks
 
 <p align="center">
   <img src="assets/prints/3.jpg" alt="Tela Inicial" width="250"/>
 </p>
+
 ### Tela de notificações recebeidas vazia
 
 <p align="center">
   <img src="assets/prints/4.jpg" alt="Tela Inicial" width="250"/>
 </p>
+
 ### Tela de notificações
 
 <p align="center">
   <img src="assets/prints/5.jpg" alt="Tela Inicial" width="250"/>
 </p>
+
 ### As notificações do app
 
 <p align="center">
