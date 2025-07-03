@@ -1,7 +1,7 @@
 # 🕥 Recalli App
 
 **Recalli** é um app que te ajuda a lembrar dos seus compromissos e tarefas diárias!  
-Este projeto foi desenvolvido como solução para o **segundo desafio mobile do NADIC**, utilizando notificações push e deep linking.
+Este projeto foi desenvolvido como solução para o **segundo desafio mobile do NADIC**, utilizando push notifications e deep linking.
 
 ---
 
@@ -22,6 +22,7 @@ Este projeto foi desenvolvido como solução para o **segundo desafio mobile do 
 - [AsyncStorage](https://react-native-async-storage.github.io/async-storage/) com [Zustand](https://zustand-demo.pmnd.rs/)
 - [Deep Linking](https://reactnavigation.org/docs/deep-linking/)
 - [react-native-calendars](https://github.com/wix/react-native-calendars)
+- [React Native Jest](https://jestjs.io/docs/tutorial-react-native)
 
 ---
 
