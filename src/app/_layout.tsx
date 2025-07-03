@@ -12,7 +12,7 @@ import {
 
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, StatusBar, View } from "react-native";
 
 import { useNotificationObserver } from "@/services/notifications";
 
@@ -55,8 +55,11 @@ function Loading() {
 function RootLayoutNav() {
   useNotificationObserver();
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <StatusBar barStyle="default" />
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </>
   );
 }

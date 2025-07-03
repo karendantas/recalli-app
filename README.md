@@ -10,7 +10,8 @@ Este projeto foi desenvolvido como solução para o **segundo desafio mobile do 
 - ✅ Criação de tarefas com data e horário definidos
 - 🔔 Lembretes via **push notifications**
 - 💾 Armazenamento local das tarefas
-- 🔗 Suporte a **deep linking** para abrir tarefas diretamente
+- 🔗 Suporte a **deep linking** com expo-router para abrir tarefas diretamente
+- 📦 Zustand para estados globais e armazenamento das notificações recebidas
 
 ---
 
@@ -26,24 +27,27 @@ Este projeto foi desenvolvido como solução para o **segundo desafio mobile do 
 
 ## 📱 Preview
 
-
 ---
 
 ## 📂 Estrutura básica
 
 ```bash
 📁 src
+ ┣ 📂 @types
+ ┣ 📂 app
  ┣ 📂 components
- ┣ 📂 screens
- ┣ 📂 store         # Zustand
+    ┣ 📂 Atoms
+    ┣ 📂 Molecules
+    ┣ 📂 Screens
+ ┣ 📂 constants
+ ┣ 📂 services
  ┣ 📂 utils
- ┣ 📜 App.tsx
 
 
 # Instale as dependências
 npm install
 
 # Inicie o projeto com o Expo
-npx expo start
+npx expo run:android
 
 ```

@@ -17,7 +17,10 @@ export function NotificationsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Notificações </Text>
-      <Pressable onPress={handleDeleteNotifications}>
+      <Pressable
+        style={styles.deleteButton}
+        onPress={handleDeleteNotifications}
+      >
         <Text>Apagar notificações</Text>
       </Pressable>
       <View style={styles.notifications}>
@@ -44,5 +47,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 26,
     gap: 16,
+  },
+  deleteButton: {
+    backgroundColor: theme.colors.danger,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignSelf: "flex-start",
   },
 });

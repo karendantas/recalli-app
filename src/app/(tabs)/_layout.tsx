@@ -4,6 +4,7 @@ import { Tabs } from "expo-router";
 import { theme } from "@/constants/theme/theme";
 import { TabBarNotificationIcon } from "@/components/Atoms/TabNotificationIcon";
 import { useNotificationStore } from "@/services/notificationsStorage";
+import { StatusBar } from "react-native";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>["name"];

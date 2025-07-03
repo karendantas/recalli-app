@@ -76,7 +76,7 @@ export function NewTaskForm() {
 
     await saveTask(newTask);
 
-    addNotification({
+    await addNotification({
       id: uuid.v4(),
       title: data.title,
       dateTime: fullDate.toISOString(),
@@ -101,7 +101,7 @@ export function NewTaskForm() {
               name="title"
               render={({ field: { onChange, value } }) => (
                 <Input
-                  placeholder="Tomar remedio"
+                  placeholder="Estudar algoritimos"
                   iconName="form"
                   onChangeText={onChange}
                   value={value}
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    marginTop: 20,
+    marginTop: 12,
   },
   form: {
     paddingBottom: 16,

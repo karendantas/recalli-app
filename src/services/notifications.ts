@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 import { theme } from "@/constants/theme/theme";
 import { useEffect } from "react";
 import { Route, router } from "expo-router";
+import { useNotificationStore } from "./notificationsStorage";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -74,6 +75,10 @@ export function useNotificationObserver() {
     let isMounted = true;
 
     function redirect(notification: Notifications.Notification) {
+      const title = notification.request.content.title;
+
+      useNotificationStore.getState().updateDelivered(title!);
+
       const url = notification.request.content.data?.url as Route;
       if (url) {
         router.push(url);
