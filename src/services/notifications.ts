@@ -4,9 +4,8 @@ import { Platform } from "react-native";
 import { theme } from "@/constants/theme/theme";
 import { useEffect } from "react";
 import { Route, router } from "expo-router";
-import { updateNotificationDelivered } from "./notificationsStorage";
+import { useNotificationStore } from "./notificationsStorage";
 
-// Configura as notificações recebidas em foreground
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldPlaySound: true,
@@ -76,6 +75,10 @@ export function useNotificationObserver() {
     let isMounted = true;
 
     function redirect(notification: Notifications.Notification) {
+      const title = notification.request.content.title;
+
+      useNotificationStore.getState().updateDelivered(title!);
+
       const url = notification.request.content.data?.url as Route;
       if (url) {
         router.push(url);
@@ -91,9 +94,6 @@ export function useNotificationObserver() {
 
     const subscription = Notifications.addNotificationResponseReceivedListener(
       (response) => {
-        const title = response.notification.request.content?.title as string;
-        updateNotificationDelivered(title);
-
         redirect(response.notification);
       }
     );

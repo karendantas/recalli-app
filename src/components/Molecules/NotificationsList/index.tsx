@@ -1,28 +1,28 @@
 import { AppNotification } from "@/@types/notification";
 import { theme } from "@/constants/theme/theme";
-import { getNotifications } from "@/services/notificationsStorage";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
+import { styles } from "./styles";
 
-export default function NotificationsList() {
-  const [notifications, setNotifications] = useState<AppNotification[]>([]);
-
-  async function loadNotifications() {
-    const stored = await getNotifications();
-    setNotifications(stored);
-  }
-
-  useEffect(() => {
-    loadNotifications();
-  }, []);
-
+interface NotificationsListProps {
+  notifications: AppNotification[];
+}
+export default function NotificationsList({
+  notifications,
+}: NotificationsListProps) {
   return (
     <FlatList
       data={notifications}
       keyExtractor={(item) => item.id}
       contentContainerStyle={{ gap: 12 }}
-      ListEmptyComponent={<Text>Nenhuma notificação</Text>}
+      ListEmptyComponent={
+        <View style={styles.emptyContent}>
+          <Text style={styles.emptyTitle}>Nenhuma notificação</Text>
+          <Text style={styles.emptySubtitle}>
+            Você está com tudo em dia. Volte mais tarde!
+          </Text>
+        </View>
+      }
       renderItem={({ item }) => (
         <View style={styles.card}>
           <Text style={styles.title}>{item.title}</Text>
@@ -32,20 +32,3 @@ export default function NotificationsList() {
     />
   );
 }
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#f8f8f8",
-    padding: 12,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 1,
-    gap: 8,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});

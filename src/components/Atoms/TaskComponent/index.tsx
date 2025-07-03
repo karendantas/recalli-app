@@ -45,12 +45,14 @@ export function TaskComponent({
           size={20}
           color={theme.colors.danger}
           onPress={() => onDelete(id)}
+          testID="delete-task-icon"
         />
         <Icons
           name={isCompleted ? "checkcircle" : "checkcircleo"}
           size={20}
           color={theme.colors.edit}
           onPress={() => completeTask(id)}
+          testID="check-task-icon"
         />
       </View>
     </View>

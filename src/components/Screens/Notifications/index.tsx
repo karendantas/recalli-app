@@ -1,14 +1,30 @@
 import NotificationsList from "@/components/Molecules/NotificationsList";
 import { theme } from "@/constants/theme/theme";
-import { StyleSheet, View, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useNotificationStore } from "@/services/notificationsStorage";
+import { useEffect } from "react";
+import { StyleSheet, View, Text, SafeAreaView, Pressable } from "react-native";
 
 export function NotificationsScreen() {
+  const { notifications, loadNotifications, clearNotifications } =
+    useNotificationStore();
+
+  useEffect(() => {
+    loadNotifications();
+  }, []);
+  function handleDeleteNotifications() {
+    clearNotifications();
+  }
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Notificações </Text>
+      <Pressable
+        style={styles.deleteButton}
+        onPress={handleDeleteNotifications}
+      >
+        <Text>Apagar notificações</Text>
+      </Pressable>
       <View style={styles.notifications}>
-        <NotificationsList />
+        <NotificationsList notifications={notifications} />
       </View>
     </SafeAreaView>
   );
@@ -25,11 +41,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     paddingLeft: 18,
     paddingRight: 18,
-    paddingTop: 16,
+    paddingTop: 32,
   },
   notifications: {
     flex: 1,
     paddingTop: 26,
     gap: 16,
+  },
+  deleteButton: {
+    backgroundColor: theme.colors.danger,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignSelf: "flex-start",
   },
 });
